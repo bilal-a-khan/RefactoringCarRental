@@ -1,28 +1,37 @@
 package org.example;
 
-public class Car {
+import static org.example.CarType.LUXURY;
 
-    public static final int COMPACT = 1;
-    public static final int STANDARD = 2;
-    public static final int LUXURY = 3;
+public class Car {
+    CarType type;
 
     private String makeModel;
-    private int priceCode;
 
-    public Car(String makeModel, int priceCode) {
+
+    public Car(String makeModel, CarType carType) {
         this.makeModel = makeModel;
-        this.priceCode = priceCode;
+        this.type = carType;
     }
 
     public String getMakeModel() {
         return makeModel;
     }
 
-    public int getPriceCode() {
-        return priceCode;
+    public CarType getCarType() {
+        return type;
     }
 
-    public void setPriceCode(int priceCode) {
-        this.priceCode = priceCode;
+    int getFrequentRenterPoints(Rental rental) {
+        if ((rental.getCar().getCarType() == LUXURY) && rental.getDaysRented() > 1) {
+            return 2;
+        } else {
+            return 1;
+        }
+    }
+
+    double getPrice(Rental rental) {
+        PriceStrategy priceStrategy = PriceStrategyFactory.getPriceStrategy(rental.getCar().getCarType());
+        return priceStrategy.getCharge(rental.getDaysRented());
+
     }
 }

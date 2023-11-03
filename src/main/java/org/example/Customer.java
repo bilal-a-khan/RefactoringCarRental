@@ -18,52 +18,41 @@ public class Customer {
     public String getName() {
         return name;
     }
+
     public void addRental(Rental arg) {
         rentals.add(arg);
     }
 
-
-
     public String statement() {
-        double totalAmount = 0;
-        int frequentRenterPoints = 0;
+
         String result = "Rental Record for " + getName() + "\n";
+
         for (Rental each : rentals) {
-            double thisAmount = 0;
-
-            //determine amounts for each line
-            switch (each.getCar().getPriceCode()) {
-                case Car.STANDARD:
-                    thisAmount += each.getDaysRented() *200;
-                    if (each.getDaysRented() > 3) {
-                        thisAmount += (each.getDaysRented()-3)*150;
-                    }
-                    break;
-
-                case Car.LUXURY:
-                    thisAmount += 500;
-                    break;
-
-                case Car.COMPACT:
-                    thisAmount += 150;
-                    if (each.getDaysRented() > 3) {
-                        thisAmount += (each.getDaysRented()-3)*150;
-                    }
-                    break;
-            }
-
-            frequentRenterPoints++;
-            if ((each.getCar().getPriceCode() == Car.LUXURY) && each.getDaysRented() > 1) {
-                frequentRenterPoints++;
-            }
-
-            result += "\t" + each.getCar().getMakeModel() + "\t" + String.valueOf(thisAmount) + "\n";
-            totalAmount += thisAmount;
-
+            result += "\t" + each.getCar().getMakeModel() + "\t" + each.car.getPrice(each) + "\n";
         }
-        frequentRentalPoints += frequentRenterPoints;
-        result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
-        result += "You earned " + String.valueOf(frequentRenterPoints) + " frequent renter points";
+
+        frequentRentalPoints += getTotalFrequentRenterPoints();
+
+        result += "Amount owed is " + getTotalCharge() + "\n";
+        result += "You earned " + getTotalFrequentRenterPoints() + " frequent renter points";
+
         return result;
     }
+
+    private double getTotalCharge() {
+        double totalCharge = 0;
+        for (Rental each : rentals) {
+            totalCharge += each.car.getPrice(each);
+        }
+        return totalCharge;
+    }
+
+    private int getTotalFrequentRenterPoints() {
+        int totalFrequentRenterPoints = 0;
+        for (Rental each : rentals) {
+            totalFrequentRenterPoints += each.car.getFrequentRenterPoints(each);
+        }
+        return totalFrequentRenterPoints;
+    }
+
 }

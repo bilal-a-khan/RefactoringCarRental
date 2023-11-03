@@ -1,7 +1,7 @@
 package org.example;
 
 public class Rental {
-    private Car car;
+    Car car;
     private int daysRented;
 
     public Rental(Car car, int daysRented) {
@@ -16,4 +16,5 @@ public class Rental {
     public int getDaysRented() {
         return daysRented;
     }
+
 }
