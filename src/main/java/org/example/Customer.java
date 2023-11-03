@@ -27,7 +27,7 @@ public class Customer {
     public String statement() {
         double totalAmount = 0;
         int frequentRenterPoints = 0;
-        String result = "Rental Record for " + getName() + "/n";
+        String result = "Rental Record for " + getName() + "\n";
         for (Rental each : rentals) {
             double thisAmount = 0;
 
